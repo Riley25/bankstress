@@ -1,0 +1,9 @@
+python -m venv bankstress
+
+.\bankstress\Scripts\Activate
+
+
+python -m pip install --upgrade pip
+pip install -r NII_REQUIREMENTS.txt
+
+
