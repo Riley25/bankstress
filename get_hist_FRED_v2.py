@@ -1,8 +1,4 @@
-"""
-Download the Feds 28-variable supervisory-scenario drivers
-from FRED, resample to quarterly, and guarantee a NaN-free
-wide table ready for stress-testing.
-"""
+#!D:\Documents\Python\NII_PROJECT\bankstress\Scripts\python.exe
 
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -14,16 +10,19 @@ import requests
 from fredapi import Fred
 from dotenv import load_dotenv
 from cachetools import TTLCache
+print(os.getcwd())
 
 # --------- CONFIG ----------------------------------------------------------- #
 
+FRED_FORECAST = pd.read_excel('2025-Table_3B_Supervisory_Severely_Adverse_International.xlsx')
+
 YEARS_BACK      = 10                        # adjust as needed (max 10 if SP500)
 OUTPUT_XLSX     = "macro_28_indicators.xlsx"
-OUTPUT_CSV      = "macro_28_indicators.csv"
+
 
 # Series IDs and the aggregation method to turn *raw* observations -> quarterly
 SERIES = {
-    # † Activity & prices
+    # Activity & prices
     "Real_GDP"             : ("GDPC1",      "mean"),
     "Nominal_GDP"          : ("GDP",        "mean"),
     "Real_DPI"             : ("DSPIC96",    "mean"),
@@ -31,15 +30,15 @@ SERIES = {
     "Unemployment_Rate"    : ("UNRATE",     "mean"),
     "CPI"                  : ("CPIAUCSL",   "mean"),
 
-    # † Rates
+    # Rates
     "TBill_3m"             : ("DTB3",       "mean"),
     "UST_5y"               : ("DGS5",       "mean"),
     "UST_10y"              : ("GS10",       "mean"),
-    "BBB_Spread"           : ("BAA10Y",     "mean"),
+    "BBB_Yield"            : ("BAA",        "mean"),
     "Mortgage_30y"         : ("MORTGAGE30US","mean"),
     "Prime_Rate"           : ("MPRIME",     "mean"),
 
-    # † Asset prices
+    # Asset prices
     "Equity_Index"         : ("SP500",      "mean"),   # Wilshire removed ∴ use S&P 500
     "House_Price_Index"    : ("USSTHPI",    "mean"),
     "CRE_Price_Index"      : ("BOGZ1FL075035503Q", "mean"),
