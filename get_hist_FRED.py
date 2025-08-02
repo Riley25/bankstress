@@ -63,7 +63,10 @@ def fetch_macro_data(years_back: int):
             all_data = pd.concat([all_data, data], axis=1)
         except Exception as e:
             print(f"⚠️ Error fetching {name}: {e}")
-
+    
+    df.index.name = "Date"
+    df = df.reset_index()
+    all_data = all_data.sort_values(by='Date', ascending=False)
     return all_data
 
 
@@ -73,8 +76,10 @@ def fetch_macro_data(years_back: int):
 
 if __name__ == "__main__":
     df = fetch_macro_data(YEARS_BACK)
-    df.index.name = "Date"
-    df.to_excel(OUTPUT_FILE)
+    #df.index.name = "Date"
+
+    df_cleaned = df.dropna(subset=['Real_GDP'])
+    df.to_excel(OUTPUT_FILE, index = None)
 
     print(f"\n✅ Done. Saved to {OUTPUT_FILE}")
 
