@@ -51,7 +51,7 @@ SERIES = {
 load_dotenv()
 API_KEY   = os.getenv("FRED_API_KEY")
 if not API_KEY:
-    sys.exit("❌  FRED_API_KEY missing – add it to .env")
+    sys.exit(" FRED_API_KEY missing add it to .env")
 
 fred      = Fred(api_key=API_KEY)
 session   = requests.Session()               # re-use TCP socket
@@ -82,9 +82,9 @@ def to_quarterly(raw: pd.Series, rule: str) -> pd.Series:
         s.index = pd.to_datetime(s.index)
 
     # Some series (e.g., USSTHPI) are already quarterly – guard against double resample
-    if s.index.freq == 'Q':
+    if s.index.freq == 'QE':
         return s
-    method = s.resample('Q')
+    method = s.resample('QE')
     return method.mean() if rule == "mean" else method.max()
 
 # --------- MAIN ------------------------------------------------------------- #
@@ -96,7 +96,7 @@ def build_dataset(years_back: int) -> pd.DataFrame:
     qtr_frames   = {}
     first_dates  = []    # track earliest common point
     for pretty, (sid, agg) in SERIES.items():
-        print(f"↳ fetching {pretty} ({sid}) …")
+        print(f"fetching {pretty} ({sid}) …")
         raw        = fetch_series(sid, start, end)
         qt         = to_quarterly(raw, agg).rename(pretty)
         qtr_frames[pretty] = qt
@@ -109,7 +109,7 @@ def build_dataset(years_back: int) -> pd.DataFrame:
 
     # sanity check
     if df.isna().any().any():
-        raise ValueError("Still found NaNs – investigate frequency handling.")
+        raise ValueError("Still found NaNs investigate frequency handling.")
 
     df.index.name = "QuarterEnd"
     return df
@@ -117,8 +117,8 @@ def build_dataset(years_back: int) -> pd.DataFrame:
 if __name__ == "__main__":
     df = build_dataset(YEARS_BACK)
     df.to_excel(OUTPUT_XLSX)
-    df.to_csv(OUTPUT_CSV)
-    print(f"✅ Saved {len(df)} rows ({df.columns.size} variables) to {OUTPUT_XLSX} & {OUTPUT_CSV}")
+    #df.to_csv(OUTPUT_CSV)
+    print(f" SAVED {len(df)} rows ({df.columns.size} variables) to {OUTPUT_XLSX} & {OUTPUT_CSV}")
 
 
 
