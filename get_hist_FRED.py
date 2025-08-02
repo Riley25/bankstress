@@ -19,34 +19,29 @@ OUTPUT_FILE = "macro_28_indicators.xlsx"
 # ------------------------
 
 FRED_SERIES_IDS = {
+    # Activity & prices
     "Real_GDP": "GDPC1",
-    "CPI": "CPIAUCSL",
-    "Unemployment_Rate": "UNRATE",
-    "3mo_Treasury": "GS3M",
-    "5yr_Treasury": "GS5",
-    "10yr_Treasury": "GS10",
-    "BBB_Corporate_Yield": "BAA10Y",
-    "Mortgage_Rate": "MORTGAGE30US",
-    "House_Price_Index": "USSTHPI",
-    "Dow_Jones": "DJIA",
-    "S&P_500": "SP500",
     "Nominal_GDP": "GDP",
-    "Fed_Funds": "FEDFUNDS",
-    "Oil_Price_WTI": "DCOILWTICO",
-    "Dollar_Index": "DTWEXBGS",
-    "Consumer_Confidence": "UMCSENT",
-    "VIX": "VIXCLS",
+    "Real_DPI": "DSPIC96",
+    "Nominal_DPI": "DSPI",
+    "Unemployment_Rate": "UNRATE",
+    "CPI": "CPIAUCSL",
+
+    # Rates
+    "TBill_3m": "DTB3",
+    "UST_5y": "DGS5",
+    "UST_10y": "GS10",
+    "BBB_Yield": "BAA10Y",
+    "Mortgage_30y": "MORTGAGE30US",
     "Prime_Rate": "MPRIME",
-    "Credit_Card_Rate": "TERMCBCCALLNS",
-    "Auto_Loan_Rate": "TERMCBAUTO48NS",
-    "Industrial_Production": "INDPRO",
-    "Retail_Sales": "RSAFS",
-    "Payroll_Employment": "PAYEMS",
-    "PCE_Inflation": "PCEPI",
-    "Net_Exports": "NETEXP",
-    "Total_Reserves": "TREAST",
-    "Bank_Credit": "TOTBKCR"
+
+    # Asset prices
+    "Equity_Index": "SP500",         
+    "House_Price_Index": "BOGZ1FL075035243Q",
+    "CRE_Price_Index": "BOGZ1FL075035503Q",
+    "VIX": "VIXCLS",
 }
+
 
 # ------------------------
 # Pull Data
