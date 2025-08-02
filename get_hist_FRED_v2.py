@@ -14,7 +14,7 @@ print(os.getcwd())
 
 # --------- CONFIG ----------------------------------------------------------- #
 
-FRED_FORECAST = pd.read_excel('2025-Table_3B_Supervisory_Severely_Adverse_International.xlsx')
+FRED_FORECAST = pd.read_excel('2025-Table_3A_Supervisory_Severely_Adverse_Domestic.xlsx')
 
 YEARS_BACK      = 10                        # adjust as needed (max 10 if SP500)
 OUTPUT_XLSX     = "macro_28_indicators.xlsx"
