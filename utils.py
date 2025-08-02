@@ -3,14 +3,16 @@ import pandas as pd
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
+load_dotenv()
 
 # ------------------------
 # USER SETTINGS
 # ------------------------
 
-FRED_API_KEY = os.getenv("FRED_API_KEY") or "fc29b91df570ee581c1ff199dc2c1097"
-YEARS_BACK = 15  # set to 10, 15, or 20
-OUTPUT_FILE = "macro_28_indicators.csv"
+FRED_API_KEY = os.getenv("FRED_API_KEY")
+
+YEARS_BACK = 10  # set to 10, 15, or 20
+OUTPUT_FILE = "macro_28_indicators.xlsx"
 
 # ------------------------
 # 28 Indicator Series IDs from Federal Reserve's Supervisory Scenarios
@@ -77,7 +79,8 @@ def fetch_macro_data(years_back: int):
 if __name__ == "__main__":
     df = fetch_macro_data(YEARS_BACK)
     df.index.name = "Date"
-    df.to_csv(OUTPUT_FILE)
+    df.to_excel(OUTPUT_FILE)
+
     print(f"\n✅ Done. Saved to {OUTPUT_FILE}")
 
 
