@@ -6,6 +6,8 @@ import os
 import sys
 
 import pandas as pd
+import numpy as np
+
 import requests
 from fredapi import Fred
 from dotenv import load_dotenv
@@ -14,35 +16,33 @@ print(os.getcwd())
 
 # --------- CONFIG ----------------------------------------------------------- #
 
-FRED_FORECAST = pd.read_excel('2025-Table_3A_Supervisory_Severely_Adverse_Domestic.xlsx')
-
-YEARS_BACK      = 10                        # adjust as needed (max 10 if SP500)
-OUTPUT_XLSX     = "macro_28_indicators.xlsx"
+YEARS_BACK      = 10                      
+OUTPUT_XLSX     = "macro_indicators.xlsx"
 
 
 # Series IDs and the aggregation method to turn *raw* observations -> quarterly
 SERIES = {
     # Activity & prices
-    "Real_GDP"             : ("GDPC1",      "mean"),
-    "Nominal_GDP"          : ("GDP",        "mean"),
-    "Real_DPI"             : ("DSPIC96",    "mean"),
-    "Nominal_DPI"          : ("DSPI",       "mean"),
-    "Unemployment_Rate"    : ("UNRATE",     "mean"),
+    "REAL_GDP"             : ("GDPC1",      "mean"),
+    "NOMINAL_GDP"          : ("GDP",        "mean"),
+    "REAL_DPI"             : ("DSPIC96",    "mean"),
+    "NOMINAL_DPI"          : ("DSPI",       "mean"),
+    "UNEMPLOYMENT_RATE"    : ("UNRATE",     "mean"),
     "CPI"                  : ("CPIAUCSL",   "mean"),
 
     # Rates
-    "TBill_3m"             : ("DTB3",       "mean"),
-    "UST_5y"               : ("DGS5",       "mean"),
-    "UST_10y"              : ("GS10",       "mean"),
-    "BBB_Yield"            : ("BAA",        "mean"),
-    "Mortgage_30y"         : ("MORTGAGE30US","mean"),
-    "Prime_Rate"           : ("MPRIME",     "mean"),
+    "T_BILL_3M"            : ("DTB3",       "mean"),
+    "UST_5Y"               : ("DGS5",       "mean"),
+    "UST_10Y"              : ("GS10",       "mean"),
+    "BBB_YIELD"            : ("BAA",        "mean"),
+    "MORTGAGE_30Y"         : ("MORTGAGE30US","mean"),
+    "PRIME_RATE"           : ("MPRIME",     "mean"),
 
     # Asset prices
-    "Equity_Index"         : ("SP500",      "mean"),   # Wilshire removed ∴ use S&P 500
-    "House_Price_Index"    : ("USSTHPI",    "mean"),
-    "CRE_Price_Index"      : ("BOGZ1FL075035503Q", "mean"),
-    "VIX_Max"              : ("VIXCLS",     "max"),    # Fed uses Q.max
+    "EQUITY_INDEX"         : ("DJIA",      "mean"), 
+    "HOUSE_PRICE_INDEX"    : ("USSTHPI",    "mean"),
+    "CRE_PRICE_INDEX"      : ("BOGZ1FL075035503Q", "mean"),
+    "VIX_MAX"              : ("VIXCLS",     "max"),    # Fed uses Q.max
 }
 
 # --------- ENV & API -------------------------------------------------------- #
@@ -95,7 +95,7 @@ def build_dataset(years_back: int) -> pd.DataFrame:
     qtr_frames   = {}
     first_dates  = []    # track earliest common point
     for pretty, (sid, agg) in SERIES.items():
-        print(f"fetching {pretty} ({sid}) …")
+        print(f"fetching {pretty} ({sid}) …", flush=True)
         raw        = fetch_series(sid, start, end)
         qt         = to_quarterly(raw, agg).rename(pretty)
         qtr_frames[pretty] = qt
@@ -115,9 +115,26 @@ def build_dataset(years_back: int) -> pd.DataFrame:
 
 if __name__ == "__main__":
     df = build_dataset(YEARS_BACK)
+
+    growth_map = {
+    "REAL_GDP"   : "REAL_GDP_G",
+    "NOMINAL_GDP": "NOMINAL_GDP_G",
+    "REAL_DPI"   : "REAL_DPI_G",
+    "NOMINAL_DPI": "NOMINAL_DPI_G",
+    "CPI"        : "CPI_G",
+    }
+
+    for level_col, growth_col in growth_map.items():
+        # 400 * ln(X_t / X_{t-1})  ==> annualised percent
+        df[growth_col] = 400 * np.log(df[level_col] / df[level_col].shift(1))
+
+    # Drop first row (it has NaNs because of the shift)
+    df = df.dropna().copy()
+
+
     df.to_excel(OUTPUT_XLSX)
     #df.to_csv(OUTPUT_CSV)
-    print(f" SAVED {len(df)} rows ({df.columns.size} variables) to {OUTPUT_XLSX} & {OUTPUT_CSV}")
+    print(f" SAVED {len(df)} rows ({df.columns.size} variables) to {OUTPUT_XLSX} ")
 
 
 
