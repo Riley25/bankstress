@@ -230,3 +230,4 @@ periods = pd.PeriodIndex(clean, freq="Q")
 BASELINE_DOMESTIC_2025["Date"] = periods.to_timestamp("Q")
 
 
+BASELINE_DOMESTIC_2025.to_excel('2025_BASELINE_DOMESTIC.xlsx', index = None) 

@@ -16,32 +16,32 @@ print(os.getcwd())
 # --------- CONFIG ----------------------------------------------------------- #
 
 YEARS_BACK      = 10                      
-OUTPUT_XLSX     = "macro_indicators.xlsx"
+OUTPUT_XLSX     = "HIST_FRED_macro_indicators.xlsx"
 
 
 # Series IDs and the aggregation method to turn *raw* observations -> quarterly
 SERIES = {
     # Activity & prices
-    "REAL_GDP"             : ("GDPC1",      "mean"),
-    "NOMINAL_GDP"          : ("GDP",        "mean"),
-    "REAL_DPI"             : ("DSPIC96",    "mean"),
-    "NOMINAL_DPI"          : ("DSPI",       "mean"),
-    "UNEMPLOYMENT_RATE"    : ("UNRATE",     "mean"),
-    "CPI"                  : ("CPIAUCSL",   "mean"),
+    "REAL_GDP"                                      : ("GDPC1",      "mean"),
+    "NOMINAL_GDP"                                   : ("GDP",        "mean"),
+    "REAL_DPI"                                      : ("DSPIC96",    "mean"),
+    "NOMINAL_DPI"                                   : ("DSPI",       "mean"),
+    "Unemployment rate"                             : ("UNRATE",     "mean"),
+    "CPI"                                           : ("CPIAUCSL",   "mean"),
 
     # Rates
-    "T_BILL_3M"            : ("DTB3",       "mean"),
-    "UST_5Y"               : ("DGS5",       "mean"),
-    "UST_10Y"              : ("GS10",       "mean"),
-    "BBB_YIELD"            : ("BAA",        "mean"),
-    "MORTGAGE_30Y"         : ("MORTGAGE30US","mean"),
-    "PRIME_RATE"           : ("MPRIME",     "mean"),
+    "3-month Treasury rate"                         : ("DTB3",       "mean"),
+    "5-year Treasury yield"                         : ("DGS5",       "mean"),
+    "10-year Treasury yield"                        : ("GS10",       "mean"),
+    "BBB corporate yield"                           : ("BAA",        "mean"),
+    "Mortgage rate"                                 : ("MORTGAGE30US","mean"),
+    "Prime rate"                                    : ("MPRIME",     "mean"),
 
     # Asset prices
-    "EQUITY_INDEX"         : ("DJIA",      "mean"), 
-    "HOUSE_PRICE_INDEX"    : ("USSTHPI",    "mean"),
-    "CRE_PRICE_INDEX"      : ("BOGZ1FL075035503Q", "mean"),
-    "VIX_MAX"              : ("VIXCLS",     "max"),    # Fed uses Q.max
+    "Dow Jones Total Stock Market Index (Level)"    : ("DJIA",      "mean"), 
+    "House Price Index (Level)"                     : ("USSTHPI",    "mean"),
+    "Commercial Real Estate Price Index (Level)"    : ("BOGZ1FL075035503Q", "mean"),
+    "Market Volatility Index (Level)"               : ("VIXCLS",     "max"),    # Fed uses Q.max
 }
 
 # --------- ENV & API -------------------------------------------------------- #
