@@ -12,4 +12,3 @@ ET_TIME = ET_TIME.strftime('%A %B %d, %Y (%I:%M %p)')
 
 print('UTC TIME: ' + UTC_TIME)
 print(' ET TIME: ' + ET_TIME)
-print(' ET TIME: ' + ET_TIME)
