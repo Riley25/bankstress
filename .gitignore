@@ -3,3 +3,4 @@ NII_NOTES.txt
 *.url
 *.xlsx
 *.csv
+.vscode/

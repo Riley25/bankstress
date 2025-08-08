@@ -1,4 +1,3 @@
-#!D:\Documents\Python\NII_PROJECT\bankstress\Scripts\python.exe
 
 from datetime import datetime, timedelta
 from pathlib import Path
